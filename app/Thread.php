@@ -7,7 +7,7 @@ use App\Events\ThreadWasReplied;
 
 class Thread extends Model
 {
-    use RecordsActivity;
+    //use RecordsActivity;
 
     protected $guarded = [];
     protected $with = ['creator','channel']; //Just eager loading relationships
