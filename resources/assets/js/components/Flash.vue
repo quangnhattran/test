@@ -8,23 +8,21 @@
         props: ['data'],
         data() {
             return {
-                message:this.data,
+                message:this.data.message,
                 type:'success',
                 show:false
             }
         },
         created() {
-            if(this.message) this.flash();
+            if(this.message) this.flash(this.data);
             window.Events.$on('flash',(data)=>{
                this.flash(data);
             });
         },
         methods: {
             flash(data) {
-                if(data) {
-                 this.message = data.message;
-                this.type = data.type;
-                }
+                //this.message = data.message;
+                if(data.type) this.type=data.type;
                 this.show=true;
                 this.hide();
             },
@@ -41,5 +39,6 @@
        position: fixed;
        right: 25px;
        bottom: 25px;
+       z-index:999;
    }
 </style>

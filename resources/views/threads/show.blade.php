@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="/css/vendor/atwho.css">
 @endsection
 @section('content')
-<thread-view :data="{{$thread}}" inline-template>
+<thread-view :thread="{{$thread}}" inline-template>
     <div class="container">
     <div class="row">
         <div class="col-md-8">
@@ -42,8 +42,12 @@
                     {{ $thread->created_at->diffForHumans()}}
                     and it has @{{replies_count}} {{ str_plural('reply',$thread->replies_count) }}
                 </div>
-
-                <subscribe-button :active="{{json_encode($thread->isSubscribed)}}"></subscribe-button>
+                <div class="card-body level" v-if="signedIn">
+                    <subscribe-button :active="{{json_encode($thread->isSubscribed)}}"></subscribe-button>
+                    <button class="btn btn-sm btn-default" v-if="authorize('isAdmin')" 
+                                    @click="toggleLock"
+                                    v-text="locked ? 'Unlock' : 'Lock'"></button>
+                </div>
             </div>
         </div>
     </div>

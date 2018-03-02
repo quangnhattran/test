@@ -2959,7 +2959,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['data'],
     data: function data() {
         return {
-            message: this.data,
+            message: this.data.message,
             type: 'success',
             show: false
         };
@@ -2967,7 +2967,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         var _this = this;
 
-        if (this.message) this.flash();
+        if (this.message) this.flash(this.data);
         window.Events.$on('flash', function (data) {
             _this.flash(data);
         });
@@ -2975,10 +2975,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         flash: function flash(data) {
-            if (data) {
-                this.message = data.message;
-                this.type = data.type;
-            }
+            //this.message = data.message;
+            if (data.type) this.type = data.type;
             this.show = true;
             this.hide();
         },
@@ -3037,6 +3035,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery_caret___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery_caret__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_at_js__ = __webpack_require__("./node_modules/at.js/dist/js/jquery.atwho.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_at_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_at_js__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3168,6 +3171,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -3260,15 +3266,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['data'],
+    props: ['reply'],
     components: { FavoriteButton: __WEBPACK_IMPORTED_MODULE_1__FavoriteButton___default.a },
     data: function data() {
         return {
-            reply: this.data,
             editing: false,
-            id: this.data.id,
-            body: this.data.body,
-            isBest: this.data.isBest
+            id: this.reply.id,
+            body: this.reply.body,
+            isBest: this.reply.isBest
         };
     },
     created: function created() {
@@ -3351,15 +3356,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['data'],
+    props: ['thread'],
 
-  components: { Replies: __WEBPACK_IMPORTED_MODULE_0__components_Replies_vue___default.a, SubscribeButton: __WEBPACK_IMPORTED_MODULE_1__components_SubscribeButton___default.a },
+    components: { Replies: __WEBPACK_IMPORTED_MODULE_0__components_Replies_vue___default.a, SubscribeButton: __WEBPACK_IMPORTED_MODULE_1__components_SubscribeButton___default.a },
 
-  data: function data() {
-    return {
-      replies_count: this.data.replies_count
-    };
-  }
+    data: function data() {
+        return {
+            replies_count: this.thread.replies_count,
+            locked: this.thread.locked
+        };
+    },
+
+    methods: {
+        toggleLock: function toggleLock() {
+
+            axios[this.locked ? 'delete' : 'post']('/locked-thread/' + this.thread.slug);
+            this.locked = !this.locked;
+        }
+    }
 });
 
 /***/ }),
@@ -7273,7 +7287,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\ndiv[data-v-24005b09] {\n    position: fixed;\n    right: 25px;\n    bottom: 25px;\n}\n", ""]);
+exports.push([module.i, "\ndiv[data-v-24005b09] {\n    position: fixed;\n    right: 25px;\n    bottom: 25px;\n    z-index:999;\n}\n", ""]);
 
 // exports
 
@@ -54947,38 +54961,53 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "form-group" }, [
-      _c("textarea", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.body,
-            expression: "body"
-          }
-        ],
-        staticClass: "form-control",
-        attrs: { id: "rbody", rows: "3", required: "" },
-        domProps: { value: _vm.body },
-        on: {
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.body = $event.target.value
-          }
-        }
-      })
-    ]),
-    _vm._v(" "),
-    _c(
-      "button",
-      { staticClass: "btn btn-primary", on: { click: _vm.submit } },
-      [_vm._v("Post")]
-    )
+    _vm.signedIn
+      ? _c("div", [
+          _c("div", { staticClass: "form-group" }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.body,
+                  expression: "body"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { id: "rbody", rows: "3", required: "" },
+              domProps: { value: _vm.body },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.body = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            { staticClass: "btn btn-primary", on: { click: _vm.submit } },
+            [_vm._v("Post")]
+          )
+        ])
+      : _c("div", [
+          _vm._v("\r\n        You must "),
+          _vm._m(0),
+          _vm._v(" to leave a reply.\r\n    ")
+        ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "/login" } }, [_c("em", [_vm._v("login")])])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -55006,7 +55035,7 @@ var render = function() {
           { key: reply.id, staticClass: "card mb-2" },
           [
             _c("reply", {
-              attrs: { data: reply },
+              attrs: { reply: reply },
               on: {
                 removed: function($event) {
                   _vm.remove(index)
@@ -55027,7 +55056,13 @@ var render = function() {
       _vm._v(" "),
       _c("hr"),
       _vm._v(" "),
-      _c("new-reply", { on: { created: _vm.add } })
+      _vm.$parent.locked
+        ? _c("p", [
+            _vm._v(
+              "\n    This thread is locked so no more replies are accepted.\n"
+            )
+          ])
+        : _c("new-reply", { on: { created: _vm.add } })
     ],
     2
   )
@@ -55226,7 +55261,7 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
-    _vm.authorize("owns", _vm.reply)
+    _vm.authorize("owns", _vm.reply) || _vm.authorize("owns", _vm.reply.thread)
       ? _c(
           "div",
           {
@@ -55263,14 +55298,16 @@ var render = function() {
               [_vm._v("Delete")]
             ),
             _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-outline-default btn-sm ml-auto",
-                on: { click: _vm.markBestReply }
-              },
-              [_vm._v("Best Reply?")]
-            )
+            _vm.authorize("owns", _vm.reply.thread)
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-default btn-sm ml-auto",
+                    on: { click: _vm.markBestReply }
+                  },
+                  [_vm._v("Best Reply?")]
+                )
+              : _vm._e()
           ]
         )
       : _vm._e()
@@ -55364,14 +55401,12 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card-body" }, [
-    _c("button", {
-      staticClass: "btn btn-sm",
-      class: _vm.classes,
-      domProps: { textContent: _vm._s(_vm.text) },
-      on: { click: _vm.subscribe }
-    })
-  ])
+  return _c("button", {
+    staticClass: "btn btn-sm mr-2",
+    class: _vm.classes,
+    domProps: { textContent: _vm._s(_vm.text) },
+    on: { click: _vm.subscribe }
+  })
 }
 var staticRenderFns = []
 render._withStripped = true

@@ -22,7 +22,7 @@ class Trending
 
     protected function getCacheKey()
     {
-        return app()->environment()=='testing' ? 'testing_trending' : 'trending_threads';
+        return app()->environment()=='testing' ? 'testing_trending' : 'trending_threads_test';
     }
 
     public function destroy() 

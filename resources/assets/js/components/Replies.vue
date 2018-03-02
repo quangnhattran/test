@@ -1,7 +1,7 @@
 <template>
     <div>
     <div class="card mb-2" v-for="(reply,index) in replies" :key="reply.id">
-        <reply :data="reply" @removed="remove(index)"></reply>
+        <reply :reply="reply" @removed="remove(index)"></reply>
     </div>
 
     <paginator :dataSet="dataSet" @changed="fetch"></paginator>
@@ -9,7 +9,10 @@
     <p>There is no reply yet.</p>
     
     <hr>
-    <new-reply @created="add"></new-reply>
+    <p v-if="$parent.locked">
+        This thread is locked so no more replies are accepted.
+    </p>
+    <new-reply @created="add" v-else></new-reply>
     </div>
 </template>
 

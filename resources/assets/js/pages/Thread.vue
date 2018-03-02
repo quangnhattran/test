@@ -2,13 +2,21 @@
 import Replies from '../components/Replies.vue';
 import SubscribeButton from '../components/SubscribeButton'
 export default {
-  props: ['data'],
+  props: ['thread'],
 
   components: {Replies,SubscribeButton},
 
   data() {
       return {
-          replies_count: this.data.replies_count
+          replies_count: this.thread.replies_count,
+          locked:this.thread.locked
+      }
+  },
+  methods: {
+      toggleLock() {
+          
+          axios[this.locked ? 'delete' : 'post']('/locked-thread/'+this.thread.slug);
+          this.locked = ! this.locked;
       }
   }
 }

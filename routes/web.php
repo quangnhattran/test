@@ -12,10 +12,13 @@
 */
 
 Route::get('/threads','ThreadController@index');
-Route::post('/threads','ThreadController@store');
+Route::post('/threads','ThreadController@store')->middleware('confirm-email');
 Route::get('/threads/create','ThreadController@create');
 Route::get('/threads/{channel}/{thread}','ThreadController@show');
 Route::delete('/threads/{channel}/{thread}','ThreadController@destroy');
+
+Route::delete('/locked-thread/{thread}','LockedThreadController@destroy')->middleware('administrator')->name('locked-thread.destroy');
+Route::post('/locked-thread/{thread}','LockedThreadController@store')->middleware('administrator')->name('locked-thread.store');
 Route::post('/threads/{channel}/{thread}/replies','ReplyController@store');
 Route::get('/threads/{channel}/{thread}/replies','ReplyController@index');
 Route::patch('/replies/{reply}','ReplyController@update');
@@ -27,6 +30,8 @@ Route::post('/threads/{channel}/{thread}/subscriptions','ThreadSubscriptionContr
 Route::delete('/threads/{channel}/{thread}/subscriptions','ThreadSubscriptionController@destroy');
 Route::get('/users/{notificationId}','UserNotificationController@destroy');
 Route::get('/profiles/{user}','ProfileController@show');
+
+Route::get('/register/confirm','Api\UserController@confirm');
 
 Route::get('/api/users','Api\UserController@index');
 Route::post('/api/users/{user}/avatar','Api\UserAvatarController@store');

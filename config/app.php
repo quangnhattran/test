@@ -150,6 +150,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Survey\SurveyServiceProvider::class,
 
         /*
          * Application Service Providers...

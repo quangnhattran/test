@@ -1,7 +1,7 @@
 <template>
-  <div class="card-body">
-        <button class="btn btn-sm" :class="classes" @click="subscribe" v-text="text"></button>
-    </div>
+  
+        <button class="btn btn-sm mr-2" :class="classes" @click="subscribe" v-text="text"></button>
+    
 </template>
 
 <script>

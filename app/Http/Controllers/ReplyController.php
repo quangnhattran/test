@@ -25,6 +25,10 @@ class ReplyController extends Controller
         $reply = request()->validate([
             'body' => ['required','min:3','spamfree']
         ]);
+
+        if($thread->locked) {
+            return response('Thread is Locked',422);
+        }
         
         return $thread->addReply($reply+['user_id'=>auth()->id()])
                 ->load('owner');

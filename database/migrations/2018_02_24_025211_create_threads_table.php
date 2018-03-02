@@ -16,11 +16,13 @@ class CreateThreadsTable extends Migration
         Schema::create('threads', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
+            $table->string('slug')->unique();
             $table->text('body');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('channel_id');
             $table->unsignedInteger('replies_count')->default(0);
             $table->unsignedInteger('visits')->default(0);
+            $table->boolean('locked');
             $table->unsignedInteger('best_reply_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('channel_id')->references('id')->on('channels')->onDelete('cascade');

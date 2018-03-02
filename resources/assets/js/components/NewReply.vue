@@ -1,10 +1,15 @@
 <template>
-   <div>
+<div>
+   <div v-if="signedIn">
         <div class="form-group">
             <textarea id="rbody" v-model="body" rows="3" class="form-control" required></textarea>
         </div>
             <button @click="submit" class="btn btn-primary">Post</button>
     </div>
+    <div v-else>
+        You must <a href="/login"><em>login</em></a> to leave a reply.
+    </div>
+ </div>  
 </template>
 <script>
 import 'jquery.caret'

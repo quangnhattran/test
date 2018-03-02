@@ -14,12 +14,12 @@
             <button class="btn btn-outline-primary btn-sm" @click="update">Save</button>
         </div>
 
-        <div class="card-footer level" v-if="authorize('owns',reply)" v-show="!editing">
+        <div class="card-footer level" v-if="authorize('owns',reply) || authorize('owns',reply.thread)" v-show="!editing">
             
             <button class="btn btn-outline-primary btn-sm mr-2" @click="editing=true">Edit</button>
             <button class="btn btn-outline-danger btn-sm" @click="remove">Delete</button>
 
-            <button class="btn btn-outline-default btn-sm ml-auto" @click="markBestReply">Best Reply?</button>
+            <button class="btn btn-outline-default btn-sm ml-auto" @click="markBestReply" v-if="authorize('owns',reply.thread)">Best Reply?</button>
         </div>
   </div>
 </template>
@@ -27,15 +27,14 @@
 import moment from 'moment';
 import FavoriteButton from './FavoriteButton'
 export default {
-  props: ['data'],
+  props: ['reply'],
   components: {FavoriteButton},
   data() {
       return {
-          reply: this.data,
           editing:false,
-          id:this.data.id,
-          body: this.data.body,
-          isBest:this.data.isBest
+          id:this.reply.id,
+          body: this.reply.body,
+          isBest:this.reply.isBest
       }
   },
   created() {

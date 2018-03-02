@@ -12,6 +12,11 @@ use Faker\Generator as Faker;
 | model instances for testing / seeding your application's database.
 |
 */
+$factory->state(App\User::class,'administrator',function(){
+    return [
+        'name' => 'QT'
+    ];
+});
 
 $factory->define(App\User::class, function (Faker $faker) {
     return [
@@ -23,8 +28,10 @@ $factory->define(App\User::class, function (Faker $faker) {
 });
 
 $factory->define(App\Thread::class, function (Faker $faker) {
+    $title = $faker->sentence;
     return [
-        'title'=>$faker->sentence,
+        'title'=>$title,
+        'slug' => str_slug($title),
         'body'=>$faker->paragraph,
         'user_id'=> function() {
             return factory('App\User')->create()->id;
@@ -32,6 +39,7 @@ $factory->define(App\Thread::class, function (Faker $faker) {
         'channel_id'=> function() {
             return factory('App\Channel')->create()->id;
         },
+        'locked' => false
     ];
 });
 

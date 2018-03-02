@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Events\ThreadWasReplied;
+use App\Exceptions\LockedThreadException;
 
 class Thread extends Model
 {
@@ -12,10 +13,21 @@ class Thread extends Model
     protected $guarded = [];
     protected $with = ['creator','channel']; //Just eager loading relationships
     protected $appends = ['isSubscribed'];
+    protected $casts = [
+        'locked' => 'boolean'
+    ];
+
+    protected static function boot()
+    {
+        static::created(function($thread){
+            $thread->update(['slug'=>$thread->title]);
+        });
+    }
     public function path() 
     {
-       return "/threads/{$this->channel->name}/{$this->id}";
+       return "/threads/{$this->channel->slug}/{$this->slug}";
     }
+
 
     public function addReply($reply) 
     {
@@ -23,6 +35,15 @@ class Thread extends Model
        event(new ThreadWasReplied($reply));
        return $reply;
     }
+
+    public function setSlugAttribute($title)
+    {
+        if(static::whereSlug($slug = str_slug($title))->exists()) {
+            $slug = "{$slug}-{$this->id}";
+        }
+        return $this->attributes['slug'] = $slug;
+    }
+
     /**
      * Check whether thread was updated since last user visit
      *
@@ -72,5 +93,10 @@ class Thread extends Model
     public function channel() 
     {
        return $this->belongsTo('App\Channel');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

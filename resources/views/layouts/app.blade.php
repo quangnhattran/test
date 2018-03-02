@@ -29,7 +29,7 @@
 <body>
     <div id="app">
         @include('partials.navbar')
-        <flash :data="{{ json_encode(session('flash')) }}"></flash>
+        <flash :data="{{ json_encode(['message'=>session('flash'),'type'=> session('type')] ) }}"></flash>
         <main class="py-4">
             
             @yield('content')

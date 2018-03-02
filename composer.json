@@ -25,7 +25,8 @@
             "database/factories"
         ],
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Survey\\": "packages/quang/survey/src"
         },
         "files": [
             "tests/helpers/helpers.php"

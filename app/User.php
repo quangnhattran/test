@@ -25,9 +25,22 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function confirm()
+    {
+        $this->confirmed = true;
+        $this->confirmation_token = null;
+        $this->save();
+        return redirect('/threads')->with('flash','Thanks, you verified email address');
+    }
+
     public function getAvatarAttribute($avatar) //accessor mutator
     {
        return asset($avatar ?: 'images/avatars/default.png');
+    }
+
+    public function isAdmin()
+    {
+        return in_array($this->name,['QT','Anh Ngoc']);
     }
 
     public function threads() 
