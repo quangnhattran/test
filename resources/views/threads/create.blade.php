@@ -31,7 +31,7 @@
                         <wysiwyg :name="`body`"></wysiwyg>
                     </div>
                     <div class="form-group">
-                        <div class="g-recaptcha" data-sitekey="6LfTLkoUAAAAAHzP4MFUOjHWd4qzjtwgLnvS0OAo"></div>
+                        <div class="g-recaptcha" data-sitekey="{{config('forum.recaptcha.key')}}"></div>
                     </div>
                     <button class="btn btn-primary" type="submit">Create</button>
                     </form>
