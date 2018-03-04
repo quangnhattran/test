@@ -7,12 +7,13 @@ if(! function_exists('create_admin')) {
     {       
         Redis::flushall();
 
-        factory('App\User')->create([
+        $admin = factory('App\User')->create([
             'name'=>'QT',
             'confirmed'=>true,
             'email'=>'quangvision@gmail.com',
             'password'=>bcrypt('secret')
         ]);
+        auth()->login($admin);
     }
 }
 

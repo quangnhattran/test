@@ -19,7 +19,8 @@ trait RecordsActivity
 
     public function recordActivity($type) 
     {
-       return $this->activity()->create(['user_id'=>auth()->id(),'type'=>$this->getType($type)]); 
+       $user_id = auth()->check() ? auth()->id() : $this->id;
+       return $this->activity()->create(['user_id'=>$user_id,'type'=>$this->getType($type)]); 
     }
 
     /**
