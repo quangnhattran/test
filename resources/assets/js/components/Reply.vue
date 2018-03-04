@@ -4,19 +4,20 @@
             <span><a :href="`/profiles`+reply.owner.name">
                 {{reply.owner.name}}</a>
                 replied {{ago(reply.updated_at)}}...</span>
-            <favorite-button :reply="reply" v-if="signedIn"></favorite-button>
-        </div>
-
-        <div class="card-body" v-show="!editing" v-html="reply.body"></div>
-        <div class="card-body" v-show="editing">
-            <textarea rows="3" class="form-control mb-1" v-model="body"></textarea>
-            <button class="btn btn-outline-default btn-sm" @click="editing=false">Cancel</button>
-            <button class="btn btn-outline-primary btn-sm" @click="update">Save</button>
-        </div>
-
-        <div class="card-footer level" v-if="authorize('owns',reply) || authorize('owns',reply.thread)" v-show="!editing">
             
-            <button class="btn btn-outline-primary btn-sm mr-2" @click="editing=true">Edit</button>
+        </div>
+
+        <div class="card-body trix-content" v-if="! editing" v-html="reply.body"></div>
+        <div class="card-body" v-if="editing">
+            <!-- <textarea rows="3" class="form-control mb-1" v-model="body"></textarea> -->
+            <wysiwyg v-model="body" class="mb-2" name="body" v-if="isWysiwyg"></wysiwyg>
+            <button class="btn btn-outline-default btn-sm" @click="editing=false">Cancel</button>
+            <button class="btn btn-primary btn-sm" @click="update">Save</button>
+        </div>
+
+        <div class="card-footer level" v-if="authorize('owns',reply) || authorize('owns',reply.thread)" v-show="! editing">
+            
+            <button class="btn btn-outline-primary btn-sm mr-2" @click="edit">Edit</button>
             <button class="btn btn-outline-danger btn-sm" @click="remove">Delete</button>
 
             <button class="btn btn-outline-default btn-sm ml-auto" @click="markBestReply" v-if="authorize('owns',reply.thread)">Best Reply?</button>
@@ -34,15 +35,24 @@ export default {
           editing:false,
           id:this.reply.id,
           body: this.reply.body,
-          isBest:this.reply.isBest
+          isBest:this.reply.isBest,
+          isWysiwyg: false
       }
   },
   created() {
       window.Events.$on('reply_is_best',id => {
           return this.isBest = (this.id===id);
       });
+      window.Events.$on('wysiwyg-on',id => {
+           this.isWysiwyg = (this.id===id);
+           if(! this.isWysiwyg) this.editing = false;
+      });
   },
   methods: {
+      edit() {
+          this.editing = true;
+          window.Events.$emit('wysiwyg-on',this.id);
+      },
       markBestReply() {
           window.Events.$emit('reply_is_best',this.id);
           axios.post('/replies/'+this.id+'/best');

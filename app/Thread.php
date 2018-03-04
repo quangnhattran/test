@@ -5,10 +5,11 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Events\ThreadWasReplied;
 use App\Exceptions\LockedThreadException;
-
+use Laravel\Scout\Searchable;
 class Thread extends Model
 {
     //use RecordsActivity;
+    use Searchable;
 
     protected $guarded = [];
     protected $with = ['creator','channel']; //Just eager loading relationships
@@ -19,6 +20,7 @@ class Thread extends Model
 
     protected static function boot()
     {
+        parent::boot();
         static::created(function($thread){
             $thread->update(['slug'=>$thread->title]);
         });
@@ -34,6 +36,11 @@ class Thread extends Model
        $reply= $this->replies()->create($reply); 
        event(new ThreadWasReplied($reply));
        return $reply;
+    }
+
+    public function toSearchableArray()
+    {
+        return $this->toArray() + ['path'=>$this->path()];
     }
 
     public function setSlugAttribute($title)
@@ -53,6 +60,11 @@ class Thread extends Model
     public function hasUpdateFor($user) 
     {
        return $this->updated_at > cache()->store('redis')->get($user->getCacheKeyName($this));
+    }
+
+    public function getBodyAttribute($body)
+    {
+        return \Purify::clean($body);
     }
 
     public function getIsSubscribedAttribute() 

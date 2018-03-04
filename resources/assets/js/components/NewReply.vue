@@ -2,7 +2,8 @@
 <div>
    <div v-if="signedIn">
         <div class="form-group">
-            <textarea id="rbody" v-model="body" rows="3" class="form-control" required></textarea>
+            <!-- <textarea id="rbody" v-model="body" rows="3" class="form-control" required></textarea> -->
+            <wysiwyg v-model="body" placeholder="You have something to say?" :shouldClear="completed" ref="trix"></wysiwyg>
         </div>
             <button @click="submit" class="btn btn-primary">Post</button>
     </div>
@@ -17,7 +18,8 @@ import 'at.js'
 export default {
   data() {
       return {
-          body: ''
+          body: '',
+          completed: false
       }
   },
   mounted() {
@@ -43,6 +45,8 @@ export default {
                     this.body = '';
                     flash('Your reply posted');
                     this.$emit('created',data);
+                    //this.$refs.trix.$refs.trix.value='';
+                    this.completed = ! this.completed;
                 });
       }
   }

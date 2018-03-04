@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\Recaptcha;
 
 class CreateThreadRequest extends FormRequest
 {
@@ -21,12 +22,14 @@ class CreateThreadRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Recaptcha $recaptcha)
     {
+        //dd($recaptcha);
         return [
             'channel_id' => 'required',
             'title' => 'required|min:3',
-            'body' => 'required|min:6'
+            'body' => 'required|min:6',
+            'g-recaptcha-response' => ['required',$recaptcha]
         ];
     }
 }

@@ -1,8 +1,12 @@
 <?php
 
+use Illuminate\Support\Facades\Redis;
+
 if(! function_exists('create_admin')) {
     function create_admin() 
-    {
+    {       
+        Redis::flushall();
+
         factory('App\User')->create([
             'name'=>'QT',
             'confirmed'=>true,
@@ -14,6 +18,7 @@ if(! function_exists('create_admin')) {
 
 function create($class,$attributes=[],$times=null)
 {
+    
     return factory($class,$times)->create($attributes);
 }
 

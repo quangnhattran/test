@@ -9,6 +9,20 @@
         </div>
 
         <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">Search</div>
+                <div class="card-body">
+                    <form action="/threads/search" method="get">
+                        <div class="form-group">
+                            <input type="text" name="q" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-sm" type="submit">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             @if(count($trending))
             <div class="card">
                 <div class="card-header">Trending Threads</div>

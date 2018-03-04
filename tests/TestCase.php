@@ -10,6 +10,6 @@ abstract class TestCase extends BaseTestCase
 
     public function signIn($user = null)
     {
-        $this->actingAs($user ?: create('App\User'));
+        $this->actingAs($user ?: create('App\User',['confirmed'=>true]));
     }
 }

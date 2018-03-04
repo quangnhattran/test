@@ -15,8 +15,8 @@
         <span class="ml-auto">{{$thread->replies_count}} {{str_plural('reply',$thread->replies_count)}}</span>
     </div>
 
-    <div class="card-body">
-        {{ $thread->body }}
+    <div class="card-body trix-content">
+        {!! $thread->body !!}
     </div>
     <div class="card-footer">
         {{ $thread->visits }} visits

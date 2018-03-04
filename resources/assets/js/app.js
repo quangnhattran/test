@@ -8,6 +8,8 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import InstantSearch from 'vue-instantsearch'
+Vue.use(InstantSearch)
 window.Events = new Vue();
 window.flash = function (message,type='success') {
     window.Events.$emit('flash',{message,type});
@@ -30,6 +32,7 @@ Vue.prototype.signedIn = window.App.signedIn;
 Vue.component('flash', require('./components/Flash.vue'));
 Vue.component('thread-view', require('./pages/Thread.vue'));
 Vue.component('avatar-form', require('./components/AvatarForm.vue'));
+Vue.component('wysiwyg',require('./components/Wysiwyg.vue'));
 
 const app = new Vue({
     el: '#app'

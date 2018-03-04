@@ -38,8 +38,19 @@ class ThreadController extends Controller
 
     public function store(CreateThreadRequest $request) 
     {
-       auth()->user()->threads()->create($request->all());
+       //dd('jk');
+       auth()->user()->threads()->create($request->except('g-recaptcha-response'));
        return redirect('/threads')->with('flash','Your thread created');
+    }
+
+    public function update($channel, Thread $thread)
+    {
+        $data = request()->validate([
+            'title' => 'required|min:3',
+            'body' => 'required|min:6'
+        ]);
+        $thread->update($data);
+        return response('Thread Updated',202);
     }
 
     public function destroy($channelId,Thread $thread) 

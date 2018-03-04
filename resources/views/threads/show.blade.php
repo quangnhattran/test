@@ -7,25 +7,7 @@
     <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header level">
-                    <a href="{{ $thread->path() }}">
-                    {{ $thread->title }}
-                    
-                    </a>
-                    @can('update',$thread)
-                    <form action="{{ $thread->path() }}" method="post" class=" ml-auto">
-                        {{ csrf_field() }} {{method_field('delete')}}
-                        <button class="btn btn-sm" type="submit">Delete</button>
-                    </form>
-                    
-                    @endcan
-                </div>
-
-                <div class="card-body">
-                    {{ $thread->body }}
-                </div>
-            </div>
+            @include('threads._question')
             <hr>
             
             <replies  @added="replies_count++" @removed="replies_count--">

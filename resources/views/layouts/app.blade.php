@@ -12,11 +12,15 @@
 
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="/css/vendor/trix.css">
+
     @yield('header')
     <style>
         .level {
             display: flex; align-items: center;
         }
+        [v-cloak] {display: none;}
+        .ais-highlight em {background-color:yellow}
     </style>
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
     <script>

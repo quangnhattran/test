@@ -21,7 +21,7 @@
         },
         methods: {
             flash(data) {
-                //this.message = data.message;
+                this.message = data.message;
                 if(data.type) this.type=data.type;
                 this.show=true;
                 this.hide();

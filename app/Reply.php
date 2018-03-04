@@ -28,6 +28,11 @@ class Reply extends Model
     {
        return $this->thread->where('best_reply_id',$this->id)->exists();
     }
+
+    public function getBodyAttribute($body)
+    {
+        return \Purify::clean($body);
+    }
     /**
      * Return mentioned usernames within reply body
      *
