@@ -8,7 +8,7 @@ use App\Exceptions\LockedThreadException;
 use Laravel\Scout\Searchable;
 class Thread extends Model
 {
-    //use RecordsActivity;
+    use RecordsActivity;
     use Searchable;
 
     protected $guarded = [];
