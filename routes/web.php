@@ -13,7 +13,7 @@
 Route::view('scan','scan');
 Route::get('/threads','ThreadController@index');
 Route::post('/threads','ThreadController@store')->middleware('confirm-email');
-Route::get('/threads/create','ThreadController@create');
+Route::get('/threads/create','ThreadController@create')->middleware('confirm-email');
 Route::get('/threads/search','SearchController@index');
 Route::get('/threads/{channel}/{thread}','ThreadController@show');
 Route::delete('/threads/{channel}/{thread}','ThreadController@destroy');
