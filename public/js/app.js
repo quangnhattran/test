@@ -78531,10 +78531,12 @@ var render = function() {
           attrs: { src: _vm.avatar, width: "50px", height: "50px" }
         }),
         _vm._v(" "),
-        _c("h2", [
+        _c("h2", { staticClass: "m-0" }, [
           _vm._v(_vm._s(this.user.name) + "\r\n            \r\n        ")
         ]),
-        _c("p", [_vm._v("  " + _vm._s(this.user.reputation) + " XP")])
+        _c("p", { staticClass: "m-0" }, [
+          _vm._v("  " + _vm._s(this.user.reputation) + " XP")
+        ])
       ]),
       _vm._v(" "),
       _vm.canUpdate

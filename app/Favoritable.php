@@ -35,6 +35,7 @@ trait Favoritable
     public function unfavorite() 
     {
         $attributes = ['user_id'=>auth()->id()];
+        Reputation::reduce($this->owner,Reputation::ADD_REPLY_POINTS);
         $this->favorites()->where($attributes)->delete(); 
     }
 

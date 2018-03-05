@@ -22,6 +22,11 @@ class Reply extends Model
         });
         static::deleted(function($reply) {
             $reply->thread->decrement('replies_count');
+            Reputation::reduce($reply->owner,Reputation::ADD_REPLY_POINTS);
+            if($reply->id==$reply->thread->best_reply_id) {
+                $reply->thread()->update(['best_reply_id'=>null]);
+                Reputation::reduce($reply->owner,Reputation::REPLY_MARKED_AS_BEST_POINTS);
+            }
         });
     }
 
@@ -63,5 +68,15 @@ class Reply extends Model
     public function owner() 
     {
        return $this->belongsTo('App\User','user_id');
+    }
+
+    public function markBestReply()
+    {
+        $current_best_reply = $this->thread->best_reply_id;
+        if($current_best_reply && $this->id != $current_best_reply) {
+            Reputation::reduce(Reply::find($current_best_reply)->owner,Reputation::REPLY_MARKED_AS_BEST_POINTS);
+        }
+        Reputation::award($this->owner,Reputation::REPLY_MARKED_AS_BEST_POINTS);
+        $this->thread()->update(['best_reply_id'=>$this->id]);
     }
 }

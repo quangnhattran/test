@@ -3,9 +3,9 @@
    <div class="level mb-2">
         <img :src="avatar" 
                 width="50px" height="50px" class="mr-2">
-        <h2>{{ this.user.name }}
+        <h2 class="m-0">{{ this.user.name }}
             
-        </h2><p>  {{this.user.reputation}} XP</p>
+        </h2><p class="m-0">  {{this.user.reputation}} XP</p>
     </div>    
     <image-upload name="avatar" @loaded="onLoad" v-if="canUpdate"></image-upload>
     <hr>
