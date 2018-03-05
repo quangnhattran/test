@@ -23,6 +23,7 @@ class Thread extends Model
         parent::boot();
         static::created(function($thread){
             $thread->update(['slug'=>$thread->title]);
+            Reputation::award($thread->creator,Reputation::PUBLISH_THREAD_POINTS);
         });
     }
     public function path() 

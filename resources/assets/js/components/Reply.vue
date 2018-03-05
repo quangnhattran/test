@@ -2,7 +2,7 @@
   <div>
       <div :id="`reply-`+reply.id" class="card-header level" :class="isBest ? 'alert-success' : null ">
             <span><a :href="`/profiles`+reply.owner.name">
-                {{reply.owner.name}}</a>
+                {{reply.owner.name}} ({{reply.owner.reputation}} XP)</a>
                 replied {{ago(reply.updated_at)}}...</span>
             
         </div>

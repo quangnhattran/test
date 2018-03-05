@@ -10,7 +10,7 @@
             @endif
             
         </a>
-        <h6>Posted by <a href="/profiles/{{$thread->creator->name}}">{{$thread->creator->name}}</a></h6>
+        <h6>Posted by <a href="/profiles/{{$thread->creator->name}}">{{$thread->creator->name}}</a> {{$thread->creator->reputation}} XP</h6>
         </div>
         <span class="ml-auto">{{$thread->replies_count}} {{str_plural('reply',$thread->replies_count)}}</span>
     </div>

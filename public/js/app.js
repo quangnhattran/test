@@ -10431,6 +10431,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -78529,7 +78531,10 @@ var render = function() {
           attrs: { src: _vm.avatar, width: "50px", height: "50px" }
         }),
         _vm._v(" "),
-        _c("h2", [_vm._v(_vm._s(this.user.name))])
+        _c("h2", [
+          _vm._v(_vm._s(this.user.name) + "\r\n            \r\n        ")
+        ]),
+        _c("p", [_vm._v("  " + _vm._s(this.user.reputation) + " XP")])
       ]),
       _vm._v(" "),
       _vm.canUpdate
@@ -78574,7 +78579,13 @@ var render = function() {
       [
         _c("span", [
           _c("a", { attrs: { href: "/profiles" + _vm.reply.owner.name } }, [
-            _vm._v("\n              " + _vm._s(_vm.reply.owner.name))
+            _vm._v(
+              "\n              " +
+                _vm._s(_vm.reply.owner.name) +
+                " (" +
+                _vm._s(_vm.reply.owner.reputation) +
+                " XP)"
+            )
           ]),
           _vm._v(
             "\n              replied " +

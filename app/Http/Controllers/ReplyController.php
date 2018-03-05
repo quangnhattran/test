@@ -7,6 +7,7 @@ use App\Thread;
 use App\Notifications\ReplyWasAdded;
 use App\Reply;
 use App\Events\ThreadWasReplied;
+use App\Reputation;
 
 class ReplyController extends Controller
 {
@@ -54,7 +55,10 @@ class ReplyController extends Controller
 
     public function markBestReply(Reply $reply) 
     {
+        $this->authorize('update',$reply->thread);
         $reply->thread()->update(['best_reply_id'=>$reply->id]);
+        //$reply->owner->increment('reputation',50);
+        Reputation::award($reply->owner,Reputation::REPLY_MARKED_AS_BEST_POINTS);
         return response('Reply marked as best',202);
     }
 }

@@ -18,6 +18,7 @@ class Reply extends Model
         parent::boot();
         static::created(function($reply) {
             $reply->thread->increment('replies_count');
+            Reputation::award($reply->owner,Reputation::ADD_REPLY_POINTS);
         });
         static::deleted(function($reply) {
             $reply->thread->decrement('replies_count');

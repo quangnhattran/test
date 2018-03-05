@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Reply;
+use App\Reputation;
 
 class FavoriteController extends Controller
 {
@@ -15,6 +16,8 @@ class FavoriteController extends Controller
     public function store(Reply $reply) 
     {
         $reply->favorite();
+        //$reply->owner->increment('reputation',10);
+        Reputation::award($reply->owner,Reputation::REPLY_FAVORITED_POINTS);
        return response('You favorites this reply',202);
     }
 
